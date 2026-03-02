@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sydney Golf Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-bright: #52b788;
+    --gold: #d4a843;
+    --cream: #f5f0e8;
+    --sand: #e8dcc8;
+    --text-dark: #1a1a18;
+    --text-muted: #5a5a50;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-deep);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(82,183,136,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(212,168,67,0.06) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 60px 40px 40px;
+    text-align: center;
+    border-bottom: 1px solid rgba(82,183,136,0.2);
+  }
+
+  header .eyebrow {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: -2px;
+  }
+
+  header h1 span {
+    color: var(--green-bright);
+    display: block;
+  }
+
+  header p {
+    margin-top: 20px;
+    color: rgba(245,240,232,0.55);
+    font-weight: 300;
+    font-size: 16px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    padding: 24px 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(82,183,136,0.1);
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(82,183,136,0.3);
+    color: rgba(245,240,232,0.7);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--green-bright);
+    border-color: var(--green-bright);
+    color: var(--green-deep);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 28px 40px;
+    border-bottom: 1px solid rgba(82,183,136,0.1);
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-top: 4px;
+  }
+
+  /* GRID */
+  .grid {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2px;
+    padding: 2px;
+  }
+
+  /* CARD */
+  .card {
+    background: rgba(26,58,42,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(82,183,136,0.12);
+    padding: 32px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green-bright), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover {
+    background: rgba(45,106,79,0.5);
+    transform: translateY(-4px);
+    border-color: rgba(82,183,136,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-type-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .badge-course { background: rgba(82,183,136,0.2); color: var(--green-bright); }
+  .badge-range { background: rgba(212,168,67,0.2); color: var(--gold); }
+  .badge-indoor { background: rgba(100,149,237,0.2); color: #a0c4ff; }
+  .badge-mini { background: rgba(255,150,100,0.2); color: #ffaa80; }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--cream);
+  }
+
+  .card-address {
+    font-size: 13px;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .card-address::before { content: '📍'; font-size: 11px; margin-top: 1px; }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star {
+    width: 14px;
+    height: 14px;
+    clip-path: polygon(50% 0%,61.8% 35.4%,100% 35.4%,69.1% 57.3%,80.9% 90.5%,50% 70%,19.1% 90.5%,30.9% 57.3%,0% 35.4%,38.2% 35.4%);
+    background: #666;
+  }
+
+  .star.filled { background: var(--gold); }
+  .star.half {
+    background: linear-gradient(90deg, var(--gold) 50%, #666 50%);
+  }
+
+  .rating-val {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .rating-count {
+    font-size: 12px;
+    color: rgba(245,240,232,0.35);
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(82,183,136,0.15);
+    margin: 20px 0;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .feature-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 5px 10px;
+    background: rgba(82,183,136,0.1);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 4px;
+    color: rgba(245,240,232,0.75);
+  }
+
+  .feature-tag .icon { font-size: 13px; }
+
+  /* PRICE SECTION */
+  .price-section {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .price-section-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+    margin-bottom: 12px;
+  }
+
+  .price-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price-label {
+    font-size: 13px;
+    color: rgba(245,240,232,0.65);
+  }
+
+  .price-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green-bright);
+  }
+
+  /* HOURS */
+  .hours-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .hours-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green-bright);
+    flex-shrink: 0;
+  }
+
+  /* EXPAND MODAL OVERLAY */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(6px);
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--green-deep);
+    border: 1px solid rgba(82,183,136,0.25);
+    border-radius: 16px;
+    max-width: 580px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+    transform: translateY(30px);
+    transition: transform 0.3s ease;
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(82,183,136,0.15);
+    border: none;
+    color: var(--cream);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .modal-close:hover { background: rgba(82,183,136,0.35); }
+
+  .modal-type {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .modal-address {
+    font-size: 14px;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 24px;
+  }
+
+  .modal-review {
+    background: rgba(82,183,136,0.08);
+    border-left: 3px solid var(--green-bright);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 24px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.65);
+    font-style: italic;
+  }
+
+  .modal-review-attr {
+    font-style: normal;
+    font-size: 11px;
+    color: rgba(245,240,232,0.35);
+    margin-top: 8px;
+  }
+
+  .modal-hours-section {
+    margin-top: 24px;
+  }
+
+  .modal-hours-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+    margin-bottom: 10px;
+  }
+
+  .modal-hour-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(82,183,136,0.08);
+    color: rgba(245,240,232,0.6);
+  }
+
+  .modal-hour-row .day { color: var(--cream); font-weight: 500; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px;
+    color: rgba(245,240,232,0.2);
+    font-size: 12px;
+    border-top: 1px solid rgba(82,183,136,0.1);
+    margin-top: 40px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+  .card:nth-child(8) { animation-delay: 0.4s; }
+  .card:nth-child(9) { animation-delay: 0.45s; }
+  .card:nth-child(10) { animation-delay: 0.5s; }
+  .card:nth-child(11) { animation-delay: 0.55s; }
+  .card:nth-child(12) { animation-delay: 0.6s; }
+
+  .source-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(82,183,136,0.12);
+    flex-wrap: wrap;
+  }
+
+  .source-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--green-bright);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 55%;
+  }
+
+  .source-link:hover { opacity: 1; text-decoration: underline; }
+
+  .source-phone {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: rgba(245,240,232,0.5);
+    white-space: nowrap;
+  }
+
+  .source-phone a {
+    color: rgba(245,240,232,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .source-phone a:hover { color: var(--gold); }
+
+
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 80px 40px;
+    color: rgba(245,240,232,0.3);
+  }
+
+  .no-results .icon { font-size: 48px; margin-bottom: 16px; }
+
+  @media (max-width: 600px) {
+    header { padding: 40px 20px 30px; }
+    .filter-bar, .stats-bar { padding: 20px; }
+    .stats-bar { gap: 30px; }
+    .grid { grid-template-columns: 1fr; }
+    .modal { padding: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">New South Wales, Australia</p>
+  <h1>Sydney<span>Golf Guide</span></h1>
+  <p>Discover the finest courses, ranges & indoor simulators across Greater Sydney</p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" id="totalCount">12</div>
+    <div class="stat-label">Venues</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">4.3★</div>
+    <div class="stat-label">Avg Rating</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">All</div>
+    <div class="stat-label">Areas</div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All Venues</button>
+  <button class="filter-btn" data-filter="course">Golf Courses</button>
+  <button class="filter-btn" data-filter="range">Driving Ranges</button>
+  <button class="filter-btn" data-filter="indoor">Indoor / Sim</button>
+  <button class="filter-btn" data-filter="mini">Mini Golf</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  Prices are approximate and subject to change. Always verify directly with the venue.<br>
+  Data sourced from Google Places & public venue information.
+</footer>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const venues = [
+  {
+    id: 1,
+    name: "Moore Park Golf",
+    type: ["course", "range"],
+    address: "Cleveland St, Moore Park NSW 2021",
+    website: "https://mooreparkgolf.com.au",
+    phone: "(02) 9663 1064",
+    lat: -33.8963, lng: 151.2205,
+    rating: 4.3, ratingCount: 798,
+    hours: "6:00 AM – 11:00 PM daily",
+    weekdayHours: [
+      ["Mon–Fri", "6:00 AM – 11:00 PM"],
+      ["Sat–Sun", "6:00 AM – 11:00 PM"]
+    ],
+    pricing: [
+      { label: "18 Holes (Weekday)", value: "~$45–$65" },
+      { label: "18 Holes (Weekend)", value: "~$55–$75" },
+      { label: "9 Holes", value: "~$25–$40" },
+      { label: "Club Hire", value: "~$30–$45" },
+      { label: "Driving Range (time-based bay)", value: "Online booking" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🚌", label: "Tram Access" },
+      { icon: "🛒", label: "Pro Shop" },
+      { icon: "🎯", label: "Driving Range" },
+      { icon: "👨‍🏫", label: "Lessons" },
+      { icon: "🎉", label: "Events" },
+    ],
+    description: "Sydney's most central public golf course, just 10 minutes by tram from Central Station. Also home to a state-of-the-art 60-bay Trackman driving range (reopened mid-2024 after a $1.3M upgrade with FIFA-grade turf and touch-screen ball dispensers). Online booking for both course and range.",
+    review: "The club itself is only 10 mins by tram from central. The staff at the golf shop were friendly. The course condition was really good with some challenges. The green was immaculate.",
+  },
+  {
+    id: 2,
+    name: "Long Reef Golf Club",
+    type: "course",
+    address: "Anzac Ave, Collaroy NSW 2097",
+    website: "https://longreefgolfclub.com.au",
+    phone: "(02) 9982 2943",
+    lat: -33.7389, lng: 151.3069,
+    rating: 4.5, ratingCount: 1036,
+    hours: "8:00 AM – 5:00 PM (Weekends)",
+    weekdayHours: [
+      ["Mon–Thu", "9:00 AM – 4:00 PM"],
+      ["Friday", "9:00 AM – 8:00 PM"],
+      ["Sat–Sun", "8:00 AM – 5:00 PM"]
+    ],
+    pricing: [
+      { label: "Green Fees (Visitor)", value: "~$50–$80" },
+      { label: "Twilight Round", value: "~$35–$50" },
+      { label: "Function Packages", value: "Contact venue" },
+      { label: "Cafe / Bar", value: "Open to public" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🌊", label: "Coastal Views" },
+      { icon: "🍽️", label: "Restaurant" },
+      { icon: "🎊", label: "Wedding Venue" },
+      { icon: "☕", label: "Café" },
+    ],
+    description: "Iconic Northern Beaches club with stunning coastal views over Long Reef headland. Highly rated course with excellent food and function facilities.",
+    review: "Incredible staff and venue. Not only is it an iconic location, but the staff and the team there were incredible and made our wedding journey from start to finish seamless.",
+  },
+  {
+    id: 3,
+    name: "Northbridge Golf Club",
+    type: "course",
+    address: "296C Sailors Bay Rd, Northbridge NSW 2063",
+    website: "https://northbridgegolf.com.au",
+    phone: "(02) 9958 1669",
+    lat: -33.8111, lng: 151.2217,
+    rating: 4.4, ratingCount: 568,
+    hours: "8:00 AM – 5:00 PM daily",
+    weekdayHours: [
+      ["Mon–Sun", "8:00 AM – 5:00 PM"]
+    ],
+    pricing: [
+      { label: "18 Holes (Visitor)", value: "~$60–$90" },
+      { label: "Twilight Deal", value: "~$35–$50" },
+      { label: "Cart Hire", value: "~$35–$45" },
+      { label: "Bar & Restaurant", value: "Open to members & guests" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🏞️", label: "Nature Course" },
+      { icon: "🛒", label: "Pro Shop" },
+      { icon: "🍺", label: "Bar" },
+      { icon: "🍽️", label: "Restaurant" },
+      { icon: "🛺", label: "Cart Hire" },
+    ],
+    description: "Stunning course nestled in Middle Harbour with challenging multi-level terrain. Great mix of par 3s and longer holes through beautiful native bushland. Cart hire recommended due to elevation changes.",
+    review: "Very nice short course nestled in nature in Middle Harbour. Some holes are really challenging for high and middle handicappers as fairways are narrow. Worth every penny spent on the green fee.",
+  },
+  {
+    id: 4,
+    name: "The Royal Sydney Golf Club",
+    type: "course",
+    address: "Kent Rd, Rose Bay NSW 2029",
+    website: "https://royalsydneygolf.com.au",
+    phone: "(02) 9371 4333",
+    lat: -33.8731, lng: 151.2661,
+    rating: 4.5, ratingCount: 259,
+    hours: "Members & guests only",
+    weekdayHours: [
+      ["All Days", "Open 24 hours (members)"]
+    ],
+    pricing: [
+      { label: "Membership", value: "By invitation" },
+      { label: "Guest Green Fees", value: "Via member intro" },
+      { label: "Dining", value: "Members & guests" },
+    ],
+    features: [
+      { icon: "⛳", label: "Championship Course" },
+      { icon: "👑", label: "Private Members" },
+      { icon: "🍽️", label: "Fine Dining" },
+      { icon: "🎊", label: "Functions" },
+      { icon: "🏆", label: "Tournament Host" },
+    ],
+    description: "One of Australia's most prestigious private golf clubs in Rose Bay. Championship-standard course hosting top-tier tournaments. Access by membership or member invitation only.",
+    review: "One of the best courses in Sydney. Usual chill day enjoying the sun.",
+  },
+  {
+    id: 5,
+    name: "Cammeray Golf Club",
+    type: "course",
+    address: "Park Ave, Cremorne NSW 2090",
+    website: "https://cammeraygolf.com.au",
+    phone: "(02) 9953 1522",
+    lat: -33.8262, lng: 151.2163,
+    rating: 4.0, ratingCount: 127,
+    hours: "6:30 AM – 10:00 PM (Fri/Sat)",
+    weekdayHours: [
+      ["Mon–Tue", "6:30 AM – 6:00 PM"],
+      ["Wed–Thu", "6:30 AM – 8:30 PM"],
+      ["Fri–Sat", "6:30 AM – 10:00 PM"],
+      ["Sunday", "6:30 AM – 9:00 PM"]
+    ],
+    pricing: [
+      { label: "9 Holes (Weekend)", value: "~$40" },
+      { label: "9 Holes (Weekday)", value: "~$30–$35" },
+      { label: "Social Membership", value: "Annual fee" },
+      { label: "Coaching", value: "Available" },
+    ],
+    features: [
+      { icon: "⛳", label: "9 Holes (Par 3)" },
+      { icon: "🍕", label: "Pizza Bar" },
+      { icon: "🌅", label: "Sunset Views" },
+      { icon: "👶", label: "Kid Friendly" },
+      { icon: "🐕", label: "Dog Friendly" },
+      { icon: "👨‍🏫", label: "Coaching" },
+    ],
+    description: "A compact and scenic par-3 course near Sydney Harbour with a brilliant pizza bar and restaurant. Quick rounds (~1 hour) with beautiful course views. No driving range on site. Kid and dog friendly.",
+    review: "The club now has a full kitchen and bar. We had a sunset meal with an amazing backdrop of a pink sunset overlooking the amazingly beautiful course with greenery galore! The food was fantastic!",
+  },
+  {
+    id: 6,
+    name: "Mona Vale Golf Club",
+    type: "course",
+    address: "3 Golf Ave, Mona Vale NSW 2103",
+    website: "https://monavalezgolfclub.com.au",
+    phone: "(02) 9997 4333",
+    lat: -33.6797, lng: 151.3093,
+    rating: 4.5, ratingCount: 441,
+    hours: "6:30 AM – 8:00 PM daily",
+    weekdayHours: [
+      ["Mon–Sun", "6:30 AM – 8:00 PM"]
+    ],
+    pricing: [
+      { label: "18 Holes (Visitor Weekday)", value: "~$50–$70" },
+      { label: "18 Holes (Visitor Weekend)", value: "~$60–$85" },
+      { label: "Twilight", value: "~$35–$50" },
+      { label: "Social Membership Discount", value: "5% off" },
+      { label: "Restaurant / Bar", value: "Open to public" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🏖️", label: "Northern Beaches" },
+      { icon: "🍽️", label: "Restaurant" },
+      { icon: "🌄", label: "Scenic Sunsets" },
+      { icon: "☕", label: "Café" },
+    ],
+    description: "Fantastic public course on the Northern Beaches with challenging terrain, dog-legs and elevation changes. Well-maintained greens that run fast and true. Excellent café and bar open to all.",
+    review: "Fantastic golf course for a public course. The greens were in great condition, ran fast and true. The tee boxes and fairways were also well maintained. Will be returning very soon.",
+  },
+  {
+    id: 7,
+    name: "Stonecutters Ridge Golf Club",
+    type: "course",
+    address: "86 Stonecutters Dr, Colebee NSW 2761",
+    website: "https://stonecuttersridge.com.au",
+    phone: "(02) 8814 7888",
+    lat: -33.7225, lng: 150.8647,
+    rating: 4.5, ratingCount: 1053,
+    hours: "6:00 AM – Midnight (Fri/Sat)",
+    weekdayHours: [
+      ["Mon", "6:00 AM – 6:00 PM"],
+      ["Tue", "6:00 AM – 7:00 PM"],
+      ["Wed–Thu", "6:00 AM – 9:00 PM"],
+      ["Fri–Sat", "6:00 AM – 12:00 AM"],
+      ["Sunday", "6:00 AM – 9:00 PM"]
+    ],
+    pricing: [
+      { label: "18 Holes (Weekday)", value: "~$55–$80" },
+      { label: "18 Holes (Weekend)", value: "~$70–$100" },
+      { label: "Twilight", value: "~$40–$60" },
+      { label: "Cart Hire", value: "~$35–$50" },
+      { label: "Corporate Golf Day", value: "Packages available" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🏠", label: "Function Rooms" },
+      { icon: "🍺", label: "Sports Bar" },
+      { icon: "🍽️", label: "Restaurant" },
+      { icon: "🎪", label: "Events & Parties" },
+      { icon: "💼", label: "Corporate Days" },
+    ],
+    description: "Highly-rated course in Western Sydney with every hole having its own unique identity. Exceptional conditioning and excellent function facilities for events and corporate golf days.",
+    review: "I was hugely surprised by the quality of the course and conditioning. Lots of holes where it feels there isn't a house anywhere to be found. Every hole felt different — truly brilliant.",
+  },
+  {
+    id: 8,
+    name: "The Coast Golf & Recreation Club",
+    type: "course",
+    address: "1 Coast Hospital Rd, Little Bay NSW 2036",
+    website: "https://thecoastgolf.com.au",
+    phone: "(02) 9661 4455",
+    lat: -33.9826, lng: 151.2514,
+    rating: 4.4, ratingCount: 452,
+    hours: "11:30 AM – 8:30 PM (Fri/Sat)",
+    weekdayHours: [
+      ["Mon–Tue", "11:30 AM – 2:45 PM"],
+      ["Wed–Thu", "11:30 AM – 2:45 PM, 5:30–8:00 PM"],
+      ["Fri–Sat", "11:30 AM – 8:30 PM"],
+      ["Sunday", "11:30 AM – 8:00 PM"]
+    ],
+    pricing: [
+      { label: "Green Fees (Visitor)", value: "~$50–$75" },
+      { label: "Cart Hire", value: "~$30–$45" },
+      { label: "Restaurant", value: "Open lunch & dinner" },
+    ],
+    features: [
+      { icon: "⛳", label: "18 Holes" },
+      { icon: "🌊", label: "Ocean Views" },
+      { icon: "🍽️", label: "Restaurant" },
+    ],
+    description: "Scenic course near Malabar with stunning ocean views over Little Bay. Relaxed atmosphere with friendly staff. Restaurant open for lunch and dinner.",
+    review: "I played golf at The Coast Golf and Recreation Club and had a great experience. The course is well maintained with stunning ocean views. The atmosphere is relaxed and the staff are friendly.",
+  },
+  {
+    id: 10,
+    name: "Hudson Park Driving Range",
+    type: "range",
+    address: "108 Arthur St, Strathfield NSW 2135",
+    website: "https://www.strathfield.nsw.gov.au/Play/Hudson-Park-Driving-Range",
+    phone: "(02) 9748 9993",
+    lat: -33.8692, lng: 151.0668,
+    rating: 3.9, ratingCount: 490,
+    hours: "6:30 AM – 1:00 AM daily",
+    weekdayHours: [
+      ["Mon/Wed/Fri–Sun", "6:30 AM – 1:00 AM"],
+      ["Thursday", "9:00 AM – 1:00 AM"]
+    ],
+    pricing: [
+      { label: "60 Balls (small bucket)", value: "$20" },
+      { label: "120 Balls (large bucket)", value: "$30" },
+      { label: "Club Hire", value: "Not available – BYO" },
+    ],
+    features: [
+      { icon: "🎯", label: "Driving Range" },
+      { icon: "🏠", label: "Undercover Bays" },
+      { icon: "🌙", label: "Late Night (until 1am)" },
+      { icon: "🤖", label: "Machine Counting" },
+      { icon: "💳", label: "Card Only (no cash)" },
+    ],
+    description: "Council-run undercover driving range in Strathfield, open very late most nights. Modern artificial turf mats with machine ball counting. Note: the adjacent golf course closed in 2019 — range only. BYO clubs required, no hire available.",
+    review: "Much nicer now that it's been renovated. Good quality mats, undercover bays and a very modern range with artificial turf. 120 balls for $33 — if you buy bulk it comes down to a normal price.",
+  },
+  {
+    id: 11,
+    name: "Barton Park Driving Range",
+    type: "range",
+    address: "210 W Botany St, Arncliffe NSW 2205",
+    website: "https://www.rockdale.nsw.gov.au/facilities/facility/details/barton-park-driving-range",
+    phone: "(02) 9562 1666",
+    lat: -33.9441, lng: 151.1534,
+    rating: 4.5, ratingCount: 194,
+    hours: "7:00 AM – 8:00 PM (Tue–Sun)",
+    weekdayHours: [
+      ["Monday", "11:00 AM – 8:00 PM"],
+      ["Tue–Sun", "7:00 AM – 8:00 PM"]
+    ],
+    pricing: [
+      { label: "~80 Balls", value: "~$20" },
+      { label: "Grass Hitting Area", value: "Available" },
+    ],
+    features: [
+      { icon: "🎯", label: "Driving Range" },
+      { icon: "🌿", label: "Grass Bays" },
+      { icon: "⛸️", label: "Chipping Area" },
+      { icon: "🏖️", label: "Bunker Practice" },
+      { icon: "🐕", label: "Dog Friendly" },
+      { icon: "🅿️", label: "On-site Parking" },
+    ],
+    description: "Hidden gem in Arncliffe with grass bays, chipping green and practice bunker. Cheaper alternative to Moore Park. Dog friendly with shaded picnic area. Spacious and rarely overcrowded.",
+    review: "Lovely driving range with ample space and friendly service. Grass area or mats, chipping area, a little bunker for short game and shaded seating. Dog friendly! Approximately $20 for ~80 balls.",
+  },
+  {
+    id: 12,
+    name: "Thornleigh Golf Centre",
+    type: ["mini", "range"],
+    address: "142-178 Pennant Hills Rd, Thornleigh NSW 2120",
+    website: "https://thornleighgolfcentre.com.au",
+    phone: "(02) 9484 1777",
+    lat: -33.7240, lng: 151.0872,
+    rating: 4.4, ratingCount: 1194,
+    hours: "8:30 AM – 10:00 PM (Mon–Fri)",
+    weekdayHours: [
+      ["Mon–Fri", "8:30 AM – 10:00 PM"],
+      ["Sat–Sun", "7:30 AM – 9:30/10:00 PM"]
+    ],
+    pricing: [
+      { label: "18 Holes Mini Golf", value: "~$16–$22" },
+      { label: "36 Holes Mini Golf", value: "~$26–$35" },
+      { label: "Driving Range", value: "~$15–$25" },
+      { label: "Birthday Packages", value: "From ~$20/child" },
+      { label: "Golf Lessons", value: "Available" },
+    ],
+    features: [
+      { icon: "⛳", label: "36-Hole Mini Golf" },
+      { icon: "🎯", label: "Driving Range" },
+      { icon: "👨‍🏫", label: "Golf Lessons" },
+      { icon: "🎂", label: "Birthday Parties" },
+      { icon: "🏪", label: "Pro Shop" },
+      { icon: "☕", label: "Café" },
+    ],
+    description: "Family-friendly golf centre with 36-hole mini golf through a tropical garden with water features. Also has driving range and lessons. Perfect for kids' parties. One of Sydney's best family venues.",
+    review: "The crazy golf is a really good course with a good design. 18 holes each, good value and very fun to play both consecutively. Beautiful gardens surrounding the greens. Staff seem relatively friendly.",
+  },
+  {
+    id: 13,
+    name: "One Golf Sydney",
+    type: ["indoor", "range"],
+    address: "2/7-9 Richmond Rd, Homebush West NSW 2140",
+    website: "https://onegolfsydney.com.au",
+    phone: "0420 538 282",
+    lat: -33.8652, lng: 151.0645,
+    rating: 4.8, ratingCount: 118,
+    hours: "10:00 AM – 11:00 PM daily",
+    weekdayHours: [
+      ["Mon–Sun", "10:00 AM – 11:00 PM"]
+    ],
+    pricing: [
+      { label: "Bay Hire (per hour)", value: "$20–$30/hr" },
+      { label: "Unlimited Membership", value: "From $200/month" },
+      { label: "Lessons (pro)", value: "Packages available" },
+    ],
+    features: [
+      { icon: "🖥️", label: "Screen Simulator" },
+      { icon: "❄️", label: "Air Conditioned" },
+      { icon: "🌏", label: "World Courses" },
+      { icon: "👩‍💼", label: "Female-Only Bay" },
+      { icon: "📊", label: "Swing Analysis" },
+      { icon: "👨‍🏫", label: "Pro Lessons" },
+    ],
+    description: "Premium indoor golf using the latest Korean simulation technology. 9 air-conditioned bays including a female-only private room. Practice mode or play world-famous courses. Detailed swing analysis on screen.",
+    review: "New indoor golf range using the latest simulation equipment from South Korea. 9 air-conditioned bays including a female only private room. Simulation allows driving range mode or game mode.",
+  },
+];
+
+const typeLabels = {
+  course: { label: "Golf Course", class: "badge-course" },
+  range: { label: "Driving Range", class: "badge-range" },
+  indoor: { label: "Indoor Simulator", class: "badge-indoor" },
+  mini: { label: "Mini Golf", class: "badge-mini" },
+};
+
+function renderStars(rating) {
+  let html = '<div class="stars">';
+  for (let i = 1; i <= 5; i++) {
+    if (rating >= i) html += '<div class="star filled"></div>';
+    else if (rating >= i - 0.5) html += '<div class="star half"></div>';
+    else html += '<div class="star"></div>';
+  }
+  return html + '</div>';
+}
+
+function renderCard(v) {
+  const types = Array.isArray(v.type) ? v.type : [v.type];
+  const badges = types.map(tp => `<span class="card-type-badge ${typeLabels[tp].class}">${typeLabels[tp].label}</span>`).join(' ');
+  return `
+  <div class="card" onclick="openModal(${v.id})">
+    ${badges}
+    <div class="card-name">${v.name}</div>
+    <div class="card-address">${v.address}</div>
+    <div class="rating-row">
+      ${renderStars(v.rating)}
+      <span class="rating-val">${v.rating}</span>
+      <span class="rating-count">(${v.ratingCount.toLocaleString()} reviews)</span>
+    </div>
+    <div class="divider"></div>
+    <div class="price-section">
+      <div class="price-section-title">Pricing</div>
+      <div class="price-items">
+        ${v.pricing.slice(0, 3).map(p => `
+          <div class="price-item">
+            <span class="price-label">${p.label}</span>
+            <span class="price-value">${p.value}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="features-grid">
+      ${v.features.map(f => `<span class="feature-tag"><span class="icon">${f.icon}</span>${f.label}</span>`).join('')}
+    </div>
+    <div class="hours-row">
+      <div class="hours-dot"></div>
+      ${v.hours}
+    </div>
+    <div class="source-bar">
+      <a class="source-link" href="${v.website}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐 ${v.website.replace('https://','')}</a>
+      <span class="source-phone">📞 <a href="tel:${v.phone.replace(/\s/g,'')}" onclick="event.stopPropagation()">${v.phone}</a></span>
+    </div>
+  </div>`;
+}
+
+function renderGrid(filter = 'all') {
+  const grid = document.getElementById('grid');
+  const filtered = filter === 'all' ? venues : venues.filter(v => Array.isArray(v.type) ? v.type.includes(filter) : v.type === filter);
+  document.getElementById('totalCount').textContent = filtered.length;
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-results"><div class="icon">⛳</div><div>No venues found</div></div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(renderCard).join('');
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrid(btn.dataset.filter);
+  });
+});
+
+function openModal(id) {
+  const v = venues.find(x => x.id === id);
+  const types = Array.isArray(v.type) ? v.type : [v.type];
+  const typeStr = types.map(tp => typeLabels[tp].label).join(' · ');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-type">${typeStr}</div>
+    <div class="modal-title">${v.name}</div>
+    <div class="modal-address">📍 ${v.address}</div>
+    <div class="rating-row">
+      ${renderStars(v.rating)}
+      <span class="rating-val">${v.rating}</span>
+      <span class="rating-count">(${v.ratingCount.toLocaleString()} reviews)</span>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:14px;line-height:1.7;color:rgba(245,240,232,0.65);margin-bottom:20px">${v.description}</p>
+    <div class="price-section">
+      <div class="price-section-title">Full Pricing</div>
+      <div class="price-items">
+        ${v.pricing.map(p => `
+          <div class="price-item">
+            <span class="price-label">${p.label}</span>
+            <span class="price-value">${p.value}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="features-grid" style="margin-bottom:20px">
+      ${v.features.map(f => `<span class="feature-tag"><span class="icon">${f.icon}</span>${f.label}</span>`).join('')}
+    </div>
+    <div class="modal-hours-section">
+      <div class="modal-hours-title">Opening Hours</div>
+      ${v.weekdayHours.map(h => `
+        <div class="modal-hour-row">
+          <span class="day">${h[0]}</span>
+          <span>${h[1]}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="modal-review">
+      "${v.review}"
+      <div class="modal-review-attr">— Google Review</div>
+    </div>
+    <div class="source-bar" style="margin-top:24px">
+      <a class="source-link" href="${v.website}" target="_blank" rel="noopener">🌐 ${v.website.replace('https://','')}</a>
+      <span class="source-phone">📞 <a href="tel:${v.phone.replace(/\s/g,'')}">${v.phone}</a></span>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+renderGrid();
+</script>
+</body>
+</html>
