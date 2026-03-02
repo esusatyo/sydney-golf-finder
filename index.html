@@ -599,375 +599,7 @@
 </div>
 
 <script>
-const venues = [
-  {
-    id: 1,
-    name: "Moore Park Golf",
-    type: ["course", "range"],
-    address: "Cleveland St, Moore Park NSW 2021",
-    website: "https://mooreparkgolf.com.au",
-    phone: "(02) 9663 1064",
-    lat: -33.8963, lng: 151.2205,
-    rating: 4.3, ratingCount: 798,
-    hours: "6:00 AM – 11:00 PM daily",
-    weekdayHours: [
-      ["Mon–Fri", "6:00 AM – 11:00 PM"],
-      ["Sat–Sun", "6:00 AM – 11:00 PM"]
-    ],
-    pricing: [
-      { label: "18 Holes (Weekday)", value: "~$45–$65" },
-      { label: "18 Holes (Weekend)", value: "~$55–$75" },
-      { label: "9 Holes", value: "~$25–$40" },
-      { label: "Club Hire", value: "~$30–$45" },
-      { label: "Driving Range (time-based bay)", value: "Online booking" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🚌", label: "Tram Access" },
-      { icon: "🛒", label: "Pro Shop" },
-      { icon: "🎯", label: "Driving Range" },
-      { icon: "👨‍🏫", label: "Lessons" },
-      { icon: "🎉", label: "Events" },
-    ],
-    description: "Sydney's most central public golf course, just 10 minutes by tram from Central Station. Also home to a state-of-the-art 60-bay Trackman driving range (reopened mid-2024 after a $1.3M upgrade with FIFA-grade turf and touch-screen ball dispensers). Online booking for both course and range.",
-    review: "The club itself is only 10 mins by tram from central. The staff at the golf shop were friendly. The course condition was really good with some challenges. The green was immaculate.",
-  },
-  {
-    id: 2,
-    name: "Long Reef Golf Club",
-    type: "course",
-    address: "Anzac Ave, Collaroy NSW 2097",
-    website: "https://longreefgolfclub.com.au",
-    phone: "(02) 9982 2943",
-    lat: -33.7389, lng: 151.3069,
-    rating: 4.5, ratingCount: 1036,
-    hours: "8:00 AM – 5:00 PM (Weekends)",
-    weekdayHours: [
-      ["Mon–Thu", "9:00 AM – 4:00 PM"],
-      ["Friday", "9:00 AM – 8:00 PM"],
-      ["Sat–Sun", "8:00 AM – 5:00 PM"]
-    ],
-    pricing: [
-      { label: "Green Fees (Visitor)", value: "~$50–$80" },
-      { label: "Twilight Round", value: "~$35–$50" },
-      { label: "Function Packages", value: "Contact venue" },
-      { label: "Cafe / Bar", value: "Open to public" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🌊", label: "Coastal Views" },
-      { icon: "🍽️", label: "Restaurant" },
-      { icon: "🎊", label: "Wedding Venue" },
-      { icon: "☕", label: "Café" },
-    ],
-    description: "Iconic Northern Beaches club with stunning coastal views over Long Reef headland. Highly rated course with excellent food and function facilities.",
-    review: "Incredible staff and venue. Not only is it an iconic location, but the staff and the team there were incredible and made our wedding journey from start to finish seamless.",
-  },
-  {
-    id: 3,
-    name: "Northbridge Golf Club",
-    type: "course",
-    address: "296C Sailors Bay Rd, Northbridge NSW 2063",
-    website: "https://northbridgegolf.com.au",
-    phone: "(02) 9958 1669",
-    lat: -33.8111, lng: 151.2217,
-    rating: 4.4, ratingCount: 568,
-    hours: "8:00 AM – 5:00 PM daily",
-    weekdayHours: [
-      ["Mon–Sun", "8:00 AM – 5:00 PM"]
-    ],
-    pricing: [
-      { label: "18 Holes (Visitor)", value: "~$60–$90" },
-      { label: "Twilight Deal", value: "~$35–$50" },
-      { label: "Cart Hire", value: "~$35–$45" },
-      { label: "Bar & Restaurant", value: "Open to members & guests" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🏞️", label: "Nature Course" },
-      { icon: "🛒", label: "Pro Shop" },
-      { icon: "🍺", label: "Bar" },
-      { icon: "🍽️", label: "Restaurant" },
-      { icon: "🛺", label: "Cart Hire" },
-    ],
-    description: "Stunning course nestled in Middle Harbour with challenging multi-level terrain. Great mix of par 3s and longer holes through beautiful native bushland. Cart hire recommended due to elevation changes.",
-    review: "Very nice short course nestled in nature in Middle Harbour. Some holes are really challenging for high and middle handicappers as fairways are narrow. Worth every penny spent on the green fee.",
-  },
-  {
-    id: 4,
-    name: "The Royal Sydney Golf Club",
-    type: "course",
-    address: "Kent Rd, Rose Bay NSW 2029",
-    website: "https://royalsydneygolf.com.au",
-    phone: "(02) 9371 4333",
-    lat: -33.8731, lng: 151.2661,
-    rating: 4.5, ratingCount: 259,
-    hours: "Members & guests only",
-    weekdayHours: [
-      ["All Days", "Open 24 hours (members)"]
-    ],
-    pricing: [
-      { label: "Membership", value: "By invitation" },
-      { label: "Guest Green Fees", value: "Via member intro" },
-      { label: "Dining", value: "Members & guests" },
-    ],
-    features: [
-      { icon: "⛳", label: "Championship Course" },
-      { icon: "👑", label: "Private Members" },
-      { icon: "🍽️", label: "Fine Dining" },
-      { icon: "🎊", label: "Functions" },
-      { icon: "🏆", label: "Tournament Host" },
-    ],
-    description: "One of Australia's most prestigious private golf clubs in Rose Bay. Championship-standard course hosting top-tier tournaments. Access by membership or member invitation only.",
-    review: "One of the best courses in Sydney. Usual chill day enjoying the sun.",
-  },
-  {
-    id: 5,
-    name: "Cammeray Golf Club",
-    type: "course",
-    address: "Park Ave, Cremorne NSW 2090",
-    website: "https://cammeraygolf.com.au",
-    phone: "(02) 9953 1522",
-    lat: -33.8262, lng: 151.2163,
-    rating: 4.0, ratingCount: 127,
-    hours: "6:30 AM – 10:00 PM (Fri/Sat)",
-    weekdayHours: [
-      ["Mon–Tue", "6:30 AM – 6:00 PM"],
-      ["Wed–Thu", "6:30 AM – 8:30 PM"],
-      ["Fri–Sat", "6:30 AM – 10:00 PM"],
-      ["Sunday", "6:30 AM – 9:00 PM"]
-    ],
-    pricing: [
-      { label: "9 Holes (Weekend)", value: "~$40" },
-      { label: "9 Holes (Weekday)", value: "~$30–$35" },
-      { label: "Social Membership", value: "Annual fee" },
-      { label: "Coaching", value: "Available" },
-    ],
-    features: [
-      { icon: "⛳", label: "9 Holes (Par 3)" },
-      { icon: "🍕", label: "Pizza Bar" },
-      { icon: "🌅", label: "Sunset Views" },
-      { icon: "👶", label: "Kid Friendly" },
-      { icon: "🐕", label: "Dog Friendly" },
-      { icon: "👨‍🏫", label: "Coaching" },
-    ],
-    description: "A compact and scenic par-3 course near Sydney Harbour with a brilliant pizza bar and restaurant. Quick rounds (~1 hour) with beautiful course views. No driving range on site. Kid and dog friendly.",
-    review: "The club now has a full kitchen and bar. We had a sunset meal with an amazing backdrop of a pink sunset overlooking the amazingly beautiful course with greenery galore! The food was fantastic!",
-  },
-  {
-    id: 6,
-    name: "Mona Vale Golf Club",
-    type: "course",
-    address: "3 Golf Ave, Mona Vale NSW 2103",
-    website: "https://monavalezgolfclub.com.au",
-    phone: "(02) 9997 4333",
-    lat: -33.6797, lng: 151.3093,
-    rating: 4.5, ratingCount: 441,
-    hours: "6:30 AM – 8:00 PM daily",
-    weekdayHours: [
-      ["Mon–Sun", "6:30 AM – 8:00 PM"]
-    ],
-    pricing: [
-      { label: "18 Holes (Visitor Weekday)", value: "~$50–$70" },
-      { label: "18 Holes (Visitor Weekend)", value: "~$60–$85" },
-      { label: "Twilight", value: "~$35–$50" },
-      { label: "Social Membership Discount", value: "5% off" },
-      { label: "Restaurant / Bar", value: "Open to public" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🏖️", label: "Northern Beaches" },
-      { icon: "🍽️", label: "Restaurant" },
-      { icon: "🌄", label: "Scenic Sunsets" },
-      { icon: "☕", label: "Café" },
-    ],
-    description: "Fantastic public course on the Northern Beaches with challenging terrain, dog-legs and elevation changes. Well-maintained greens that run fast and true. Excellent café and bar open to all.",
-    review: "Fantastic golf course for a public course. The greens were in great condition, ran fast and true. The tee boxes and fairways were also well maintained. Will be returning very soon.",
-  },
-  {
-    id: 7,
-    name: "Stonecutters Ridge Golf Club",
-    type: "course",
-    address: "86 Stonecutters Dr, Colebee NSW 2761",
-    website: "https://stonecuttersridge.com.au",
-    phone: "(02) 8814 7888",
-    lat: -33.7225, lng: 150.8647,
-    rating: 4.5, ratingCount: 1053,
-    hours: "6:00 AM – Midnight (Fri/Sat)",
-    weekdayHours: [
-      ["Mon", "6:00 AM – 6:00 PM"],
-      ["Tue", "6:00 AM – 7:00 PM"],
-      ["Wed–Thu", "6:00 AM – 9:00 PM"],
-      ["Fri–Sat", "6:00 AM – 12:00 AM"],
-      ["Sunday", "6:00 AM – 9:00 PM"]
-    ],
-    pricing: [
-      { label: "18 Holes (Weekday)", value: "~$55–$80" },
-      { label: "18 Holes (Weekend)", value: "~$70–$100" },
-      { label: "Twilight", value: "~$40–$60" },
-      { label: "Cart Hire", value: "~$35–$50" },
-      { label: "Corporate Golf Day", value: "Packages available" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🏠", label: "Function Rooms" },
-      { icon: "🍺", label: "Sports Bar" },
-      { icon: "🍽️", label: "Restaurant" },
-      { icon: "🎪", label: "Events & Parties" },
-      { icon: "💼", label: "Corporate Days" },
-    ],
-    description: "Highly-rated course in Western Sydney with every hole having its own unique identity. Exceptional conditioning and excellent function facilities for events and corporate golf days.",
-    review: "I was hugely surprised by the quality of the course and conditioning. Lots of holes where it feels there isn't a house anywhere to be found. Every hole felt different — truly brilliant.",
-  },
-  {
-    id: 8,
-    name: "The Coast Golf & Recreation Club",
-    type: "course",
-    address: "1 Coast Hospital Rd, Little Bay NSW 2036",
-    website: "https://thecoastgolf.com.au",
-    phone: "(02) 9661 4455",
-    lat: -33.9826, lng: 151.2514,
-    rating: 4.4, ratingCount: 452,
-    hours: "11:30 AM – 8:30 PM (Fri/Sat)",
-    weekdayHours: [
-      ["Mon–Tue", "11:30 AM – 2:45 PM"],
-      ["Wed–Thu", "11:30 AM – 2:45 PM, 5:30–8:00 PM"],
-      ["Fri–Sat", "11:30 AM – 8:30 PM"],
-      ["Sunday", "11:30 AM – 8:00 PM"]
-    ],
-    pricing: [
-      { label: "Green Fees (Visitor)", value: "~$50–$75" },
-      { label: "Cart Hire", value: "~$30–$45" },
-      { label: "Restaurant", value: "Open lunch & dinner" },
-    ],
-    features: [
-      { icon: "⛳", label: "18 Holes" },
-      { icon: "🌊", label: "Ocean Views" },
-      { icon: "🍽️", label: "Restaurant" },
-    ],
-    description: "Scenic course near Malabar with stunning ocean views over Little Bay. Relaxed atmosphere with friendly staff. Restaurant open for lunch and dinner.",
-    review: "I played golf at The Coast Golf and Recreation Club and had a great experience. The course is well maintained with stunning ocean views. The atmosphere is relaxed and the staff are friendly.",
-  },
-  {
-    id: 10,
-    name: "Hudson Park Driving Range",
-    type: "range",
-    address: "108 Arthur St, Strathfield NSW 2135",
-    website: "https://www.strathfield.nsw.gov.au/Play/Hudson-Park-Driving-Range",
-    phone: "(02) 9748 9993",
-    lat: -33.8692, lng: 151.0668,
-    rating: 3.9, ratingCount: 490,
-    hours: "6:30 AM – 1:00 AM daily",
-    weekdayHours: [
-      ["Mon/Wed/Fri–Sun", "6:30 AM – 1:00 AM"],
-      ["Thursday", "9:00 AM – 1:00 AM"]
-    ],
-    pricing: [
-      { label: "60 Balls (small bucket)", value: "$20" },
-      { label: "120 Balls (large bucket)", value: "$30" },
-      { label: "Club Hire", value: "Not available – BYO" },
-    ],
-    features: [
-      { icon: "🎯", label: "Driving Range" },
-      { icon: "🏠", label: "Undercover Bays" },
-      { icon: "🌙", label: "Late Night (until 1am)" },
-      { icon: "🤖", label: "Machine Counting" },
-      { icon: "💳", label: "Card Only (no cash)" },
-    ],
-    description: "Council-run undercover driving range in Strathfield, open very late most nights. Modern artificial turf mats with machine ball counting. Note: the adjacent golf course closed in 2019 — range only. BYO clubs required, no hire available.",
-    review: "Much nicer now that it's been renovated. Good quality mats, undercover bays and a very modern range with artificial turf. 120 balls for $33 — if you buy bulk it comes down to a normal price.",
-  },
-  {
-    id: 11,
-    name: "Barton Park Driving Range",
-    type: "range",
-    address: "210 W Botany St, Arncliffe NSW 2205",
-    website: "https://www.rockdale.nsw.gov.au/facilities/facility/details/barton-park-driving-range",
-    phone: "(02) 9562 1666",
-    lat: -33.9441, lng: 151.1534,
-    rating: 4.5, ratingCount: 194,
-    hours: "7:00 AM – 8:00 PM (Tue–Sun)",
-    weekdayHours: [
-      ["Monday", "11:00 AM – 8:00 PM"],
-      ["Tue–Sun", "7:00 AM – 8:00 PM"]
-    ],
-    pricing: [
-      { label: "~80 Balls", value: "~$20" },
-      { label: "Grass Hitting Area", value: "Available" },
-    ],
-    features: [
-      { icon: "🎯", label: "Driving Range" },
-      { icon: "🌿", label: "Grass Bays" },
-      { icon: "⛸️", label: "Chipping Area" },
-      { icon: "🏖️", label: "Bunker Practice" },
-      { icon: "🐕", label: "Dog Friendly" },
-      { icon: "🅿️", label: "On-site Parking" },
-    ],
-    description: "Hidden gem in Arncliffe with grass bays, chipping green and practice bunker. Cheaper alternative to Moore Park. Dog friendly with shaded picnic area. Spacious and rarely overcrowded.",
-    review: "Lovely driving range with ample space and friendly service. Grass area or mats, chipping area, a little bunker for short game and shaded seating. Dog friendly! Approximately $20 for ~80 balls.",
-  },
-  {
-    id: 12,
-    name: "Thornleigh Golf Centre",
-    type: ["mini", "range"],
-    address: "142-178 Pennant Hills Rd, Thornleigh NSW 2120",
-    website: "https://thornleighgolfcentre.com.au",
-    phone: "(02) 9484 1777",
-    lat: -33.7240, lng: 151.0872,
-    rating: 4.4, ratingCount: 1194,
-    hours: "8:30 AM – 10:00 PM (Mon–Fri)",
-    weekdayHours: [
-      ["Mon–Fri", "8:30 AM – 10:00 PM"],
-      ["Sat–Sun", "7:30 AM – 9:30/10:00 PM"]
-    ],
-    pricing: [
-      { label: "18 Holes Mini Golf", value: "~$16–$22" },
-      { label: "36 Holes Mini Golf", value: "~$26–$35" },
-      { label: "Driving Range", value: "~$15–$25" },
-      { label: "Birthday Packages", value: "From ~$20/child" },
-      { label: "Golf Lessons", value: "Available" },
-    ],
-    features: [
-      { icon: "⛳", label: "36-Hole Mini Golf" },
-      { icon: "🎯", label: "Driving Range" },
-      { icon: "👨‍🏫", label: "Golf Lessons" },
-      { icon: "🎂", label: "Birthday Parties" },
-      { icon: "🏪", label: "Pro Shop" },
-      { icon: "☕", label: "Café" },
-    ],
-    description: "Family-friendly golf centre with 36-hole mini golf through a tropical garden with water features. Also has driving range and lessons. Perfect for kids' parties. One of Sydney's best family venues.",
-    review: "The crazy golf is a really good course with a good design. 18 holes each, good value and very fun to play both consecutively. Beautiful gardens surrounding the greens. Staff seem relatively friendly.",
-  },
-  {
-    id: 13,
-    name: "One Golf Sydney",
-    type: ["indoor", "range"],
-    address: "2/7-9 Richmond Rd, Homebush West NSW 2140",
-    website: "https://onegolfsydney.com.au",
-    phone: "0420 538 282",
-    lat: -33.8652, lng: 151.0645,
-    rating: 4.8, ratingCount: 118,
-    hours: "10:00 AM – 11:00 PM daily",
-    weekdayHours: [
-      ["Mon–Sun", "10:00 AM – 11:00 PM"]
-    ],
-    pricing: [
-      { label: "Bay Hire (per hour)", value: "$20–$30/hr" },
-      { label: "Unlimited Membership", value: "From $200/month" },
-      { label: "Lessons (pro)", value: "Packages available" },
-    ],
-    features: [
-      { icon: "🖥️", label: "Screen Simulator" },
-      { icon: "❄️", label: "Air Conditioned" },
-      { icon: "🌏", label: "World Courses" },
-      { icon: "👩‍💼", label: "Female-Only Bay" },
-      { icon: "📊", label: "Swing Analysis" },
-      { icon: "👨‍🏫", label: "Pro Lessons" },
-    ],
-    description: "Premium indoor golf using the latest Korean simulation technology. 9 air-conditioned bays including a female-only private room. Practice mode or play world-famous courses. Detailed swing analysis on screen.",
-    review: "New indoor golf range using the latest simulation equipment from South Korea. 9 air-conditioned bays including a female only private room. Simulation allows driving range mode or game mode.",
-  },
-];
+let venues = [];
 
 const typeLabels = {
   course: { label: "Golf Course", class: "badge-course" },
@@ -975,6 +607,10 @@ const typeLabels = {
   indoor: { label: "Indoor Simulator", class: "badge-indoor" },
   mini: { label: "Mini Golf", class: "badge-mini" },
 };
+
+function mapsUrl(v) {
+  return `https://www.google.com/maps?q=${v.lat},${v.lng}`;
+}
 
 function renderStars(rating) {
   let html = '<div class="stars">';
@@ -1021,6 +657,7 @@ function renderCard(v) {
     <div class="source-bar">
       <a class="source-link" href="${v.website}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐 ${v.website.replace('https://','')}</a>
       <span class="source-phone">📞 <a href="tel:${v.phone.replace(/\s/g,'')}" onclick="event.stopPropagation()">${v.phone}</a></span>
+      <a class="source-link" href="${mapsUrl(v)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 Maps</a>
     </div>
   </div>`;
 }
@@ -1089,6 +726,7 @@ function openModal(id) {
     <div class="source-bar" style="margin-top:24px">
       <a class="source-link" href="${v.website}" target="_blank" rel="noopener">🌐 ${v.website.replace('https://','')}</a>
       <span class="source-phone">📞 <a href="tel:${v.phone.replace(/\s/g,'')}">${v.phone}</a></span>
+      <a class="source-link" href="${mapsUrl(v)}" target="_blank" rel="noopener">📍 Maps</a>
     </div>
   `;
   document.getElementById('modalOverlay').classList.add('open');
@@ -1106,7 +744,12 @@ function closeModalDirect() {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
 
-renderGrid();
+async function init() {
+  const res = await fetch('venues.json');
+  venues = await res.json();
+  renderGrid();
+}
+init();
 </script>
 </body>
 </html>
